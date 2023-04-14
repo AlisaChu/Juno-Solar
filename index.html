@@ -35,13 +35,13 @@
                     </ul>
                 </nav>
                 <div>
-                    <a href="#"><img src="img/tools.svg" width="30" height="30"></a>
+                    <img src="img/tools.svg" width="30" height="30" alt="logo" style="cursor: pointer">
                 </div>
             </div>
         </div>
 </header>
 <main>
-    <a href="#" class="logo"><img src="img/juno_logo.png" alt="logo" width="350" height="250"></a>
+    <a href="#" class="logo"><img src="img/junosolar_logo55.png" alt="logo" width="480" height="250"></a>
     <section class="color">
         <div class="container work_style-pick">
             <h1 class="title">Willkommen bei Juno-Solar Electriker Interface</h1>
@@ -49,16 +49,50 @@
                 um auf verschiedene Funktionen der Anwendung zuzugreifen.</p>
         </div>
         <div class="container">
-            <p class="title-text" style="margin-top: 20px">Dein Beruf: Electrician</p>
-            <p class="title-text">Wenn Sie Probleme mit der Verwendung ~* unserem Solar Power Engineering Assetenten
+            <p class="title-text" style="margin-top: 30px">Dein Beruf: Electrician</p>
+            <p class="title-text" style="margin-bottom: 30px">Wenn Sie Probleme mit der Verwendung ~* unserem Solar Power Engineering Assetenten
                 Saumnittstelle haben ne son Sie mit</p>
-            <div class="container-footer">
-                <div class="textarea">
-            <textarea placeholder="Geben Sie Ihre Frage hier ein..." class="message"></textarea>
-            </div>
-                <div>
-                    <button class="btn-text-select" type="submit" >Submit</button>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chat-widget">
+                        <textarea id="question" class="message" rows="3" placeholder="Geben Sie Ihre Frage hier ein..."></textarea>
+                        <button onclick="submitQuestion()" class="btn-text-select">Submit</button>
+                        <div id="response" class="response mt-3"></div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Include jQuery, if not already included -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                function submitQuestion() {
+                    const questionElement = document.getElementById("question");
+                    const question = questionElement.value;
+
+                    if (question.trim() === "") {
+                        alert("Please enter a question.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "{% url 'invoices:chat_bot' %}",
+                        method: "POST",
+                        data: JSON.stringify({ question: question }),
+                        contentType: "application/json",
+                        success: function(data) {
+                            document.getElementById("response").innerText = data.response;
+                        },
+                        error: function() {
+                            alert("Error submitting question.");
+                        },
+                    });
+
+                    // Clear the textarea after submitting the question
+                    questionElement.value = "";
+                }
+            </script>
+        </div>
+        </div>
             </div>
         </div>
     </section>
